@@ -21,13 +21,19 @@ return {
         name = 'nvim_lsp' ,
       }, 
       { name = 'buffer' },
-      --	{ name = 'rime'}
-      },
-
-    experimental = {
-      ghost_text = true,
+      { name = 'rime', 
+      option = {
+        max_candidates = 10 , -- 设置过高会影响补全速度。
+        shared_data_dir = '/usr/share/rime-data',
+        user_data_dir = vim.fn.getenv('HOME') .. '/.local/share/cmp-rime',
+      } 
     }
-  })
+  },
+
+  experimental = {
+    ghost_text = true,
+  }
+})
   end
   },
 	{
@@ -52,11 +58,8 @@ return {
 	{
 		"hrsh7th/cmp-cmdline",
 	},
-	{
-		"Ninlives/cmp-rime",
-		lazy = false
-	},
-	{
-		"Ninlives/pyrime",
-	},
+  {
+    dir = "~/Projects/cmp-rime", --這裏克隆cmp-rime 的地址 
+  }
+
 }
