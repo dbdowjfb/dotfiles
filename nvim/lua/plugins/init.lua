@@ -15,7 +15,8 @@ return {
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-j>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<Enter>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
       }),
       sources = {{
         name = 'nvim_lsp' ,
@@ -60,6 +61,8 @@ return {
 	},
   {
     dir = "~/Projects/cmp-rime", --這裏克隆cmp-rime 的地址 
+    keys = { "<leader>cc" }
+
   }
 
 }
