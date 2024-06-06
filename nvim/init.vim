@@ -1,5 +1,6 @@
 noremap ; :
 noremap : ;
+let mapleader = " "
 
 noremap <Leader>m <cmd>!make<cr>
 
@@ -16,5 +17,6 @@ set shiftwidth=2
 set expandtab
 
 let &runtimepath.=','.escape(expand('<sfile>:p:h'), '\,')
+
 
 

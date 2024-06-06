@@ -16,9 +16,11 @@ return {
         ['<C-j>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
         ['<Enter>'] = cmp.mapping.confirm({ select = true }),
-        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
       }),
-      sources = {{
+      sources = {
+        { name = 'ultisnips',}, 
+        {
         name = 'nvim_lsp' ,
       }, 
       { name = 'buffer' },
@@ -43,8 +45,9 @@ return {
   {
   "neovim/nvim-lspconfig",
   config = function() 
-    require'lspconfig'.jedi_language_server.setup{
-    }
+    require'lspconfig'.jedi_language_server.setup({
+    })
+    require'lspconfig'.jdtls.setup({})
   end 
   },
 	{
@@ -62,7 +65,29 @@ return {
   {
     dir = "~/Projects/cmp-rime", --這裏克隆cmp-rime 的地址 
     keys = { "<leader>cc" }
-
-  }
-
+  },
+  {"williamboman/mason.nvim"}, --lsp package manager
+  {"williamboman/mason-lspconfig.nvim"}, --lsp package manager configs
+  {
+    "nvim-java/nvim-java",
+    dependencies = {
+      'nvim-java/lua-async-await',
+      'nvim-java/nvim-java-refactor',
+      'nvim-java/nvim-java-core',
+      'nvim-java/nvim-java-test',
+      'nvim-java/nvim-java-dap',
+      'MunifTanjim/nui.nvim',
+      'neovim/nvim-lspconfig',
+      'mfussenegger/nvim-dap',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          registries = {
+            'github:nvim-java/mason-registry',
+            'github:mason-org/mason-registry',
+          },
+        },
+      }
+    },
+  },
 }
