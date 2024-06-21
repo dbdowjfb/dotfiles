@@ -3,7 +3,6 @@ require("mason-lspconfig").setup({
     handlers = {
         function(server_name)
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            require("lspconfig").grammarly.setup({})
             require("lspconfig").jdtls.setup({})
         end,
     },
