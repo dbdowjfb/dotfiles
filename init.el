@@ -1,0 +1,161 @@
+(global-auto-composition-mode t)
+(global-company-mode)
+
+(require 'package)
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t) ;; installed by default
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t) ;; installed by default from Emacs 28 onwards
+(add-to-list 'package-archives
+             (cons "gnu-devel" "https://elpa.gnu.org/devel/")
+             t)
+
+(package-initialize)
+
+(setq use-package-always-ensure t)
+(eval-when-compile (require 'use-package))
+
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode 1))
+
+
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+
+
+
+
+(use-package exec-path-from-shell
+  ;; Get environment variables such as $PATH from the shell
+  ;; without this auctex doesn't work
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
+
+(defun my/latex-mode-hook ()
+  (push (list 'output-pdf "Zathura") TeX-view-program-selection))
+
+(use-package auctex
+  :ensure t
+  :defer t
+  :hook (LaTeX-mode . my/latex-mode-hook) 
+) 
+
+
+
+
+(set-face-attribute 'default nil :height 150 )
+
+(recentf-mode)
+(run-at-time nil 600 'recentf-save-list)
+
+;; org-mdoe
+;;(add-hook 'org-mode-hook 'org-cdlatex-mode)
+;;(add-hook 'org-mode-hook 'visual-line-mode)
+;; (add-hook 'org-mode-hook 'flyspell-mode )
+(setq inhibit-startup-message t)
+(setq visible-bell t)
+
+
+
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
+
+
+
+
+;; themes and fonts
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+
+
+(defun my-set-margins ()
+"Set margins in current buffer."
+(setq left-margin-width 1)
+(setq right-margin-width 1))
+
+(add-hook 'text-mode-hook 'my-set-margins)
+
+(defun my-toggle-margins ()
+"Set margins in current buffer."
+(interactive)
+(if (or (> left-margin-width 0) (> right-margin-width 0))
+(progn
+(setq left-margin-width 0)
+(setq right-margin-width 0)
+(set-window-buffer (selected-window) (current-buffer)))
+(setq left-margin-width 100)
+(setq right-margin-width 100)
+(set-window-buffer (selected-window) (current-buffer))))
+
+(global-set-key [f2] 'my-toggle-margins)
+
+
+(defun insert-date ()
+  (interactive)
+  (shell-command "date +'%Y-%m-%d %H:%M:%S'" t)) 
+
+(recentf-mode)
+
+(global-set-key (kbd "<f5>") 'insert-date )
+
+
+(defun insert-line-after-and-move ()
+  ;; simulate the `o` key in Vi
+  (interactive)
+  (move-end-of-line 1)
+  (open-line 1)
+  (next-line)
+  (indent-according-to-mode)
+)
+
+
+; keymap for insert-line-after-and-move function 
+(global-set-key (kbd "M-n") 'insert-line-after-and-move)
+
+(global-set-key (kbd "<f1>") (lambda () (interactive) (find-file "~/.notes")
+			       (org-mode)))
+
+
+;; ;; 自动保存
+(load-file "~/.emacs.d/autosave.el")
+
+(require 'auto-save)            ;; 加载自动保存模块
+
+(auto-save-enable)              ;; 开启自动保存功能
+(setq auto-save-slient t)       ;; 自动保存的时候静悄悄的， 不要打扰我
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(setq Info-default-directory-list
+             (append '("~/Downloads")
+                     Info-default-directory-list
+                    ))
