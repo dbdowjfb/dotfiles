@@ -11,7 +11,6 @@ map('n', '<leader>p', '"+p', options)
 map({'n','v'}, '<leader>y', '"+y', options)
 -- local visual_next_sentence = '<esc>v)'
 
--- using 'v)#)' as the rhs does not work for unknown reasons
 
 cmd('colorscheme vim')
 
