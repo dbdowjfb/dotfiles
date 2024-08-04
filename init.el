@@ -45,6 +45,7 @@
   :ensure t
   :config (exec-path-from-shell-initialize))
 
+(use-package gruvbox-theme)
 
 (defun my/latex-mode-hook ()
   (push (list 'output-pdf "Zathura") TeX-view-program-selection))
@@ -57,8 +58,10 @@
 
 
 
-
-(set-face-attribute 'default nil :height 150 )
+(set-face-attribute 'default nil :height 130
+		    
+		    )
+(load-theme 'gruvbox t)
 
 (recentf-mode)
 (run-at-time nil 600 'recentf-save-list)
@@ -146,8 +149,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" default))
  '(package-selected-packages
-   '(marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
+   '(emacs-goodies-el marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

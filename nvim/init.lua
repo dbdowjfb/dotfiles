@@ -16,14 +16,15 @@ map('n', '<leader><leader>', '<cmd>call feedkeys("v)#)")<cr>', options)
 
 cmd('colorscheme vim')
 
--- copy the content of the current buffer to the end of a file called ".notes"
-map('n', 'dab', 'Gdggo', options)
+
 
 autocmd({"BufEnter"}, {
-  pattern = "",
+  pattern = {""},
   callback = function(args) 
 	  local buf_name =  vim.api.nvim_buf_get_name(0)
-	  if (buf_name == '' or buf_name == nil) then
+	  if ((buf_name == '' or buf_name == nil ) and true 
+                                                   or 
+						   string.gsub(buf_name, "/[%a/]+", "") == '.notes' ) then
 		  local opts = {buffer = true, noremap = true }
 		  print('this is a nil buffer')
 		  map('n', '<BS>', 'Gdggo',  opts) 
