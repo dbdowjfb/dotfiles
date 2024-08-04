@@ -9,7 +9,6 @@ options = { noremap = true }
 
 map('n', '<leader>p', '"+p', options)
 map({'n','v'}, '<leader>y', '"+y', options)
-map('n', '<leader><leader>', '<cmd>call feedkeys("v)#)")<cr>', options)
 -- local visual_next_sentence = '<esc>v)'
 
 -- using 'v)#)' as the rhs does not work for unknown reasons
