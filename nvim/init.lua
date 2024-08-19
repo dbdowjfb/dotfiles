@@ -9,24 +9,25 @@ options = { noremap = true }
 
 map('n', '<leader>p', '"+p', options)
 map({'n','v'}, '<leader>y', '"+y', options)
--- local visual_next_sentence = '<esc>v)'
+map('n','<leader>q','<cmd>qa!<cr>',options)
+map('n', '<leader>w','<cmd>w<cr>',options)
+map({'n', 'i', 'v'},'<esc><esc>', '<esc>:', options)
+map('n', ';', ':', options)
+map('n', ':', ';', options)
+
 
 
 cmd('colorscheme vim')
-
 
 
 autocmd({"BufEnter"}, {
   pattern = {""},
   callback = function(args) 
 	  local buf_name =  vim.api.nvim_buf_get_name(0)
-	  if ((buf_name == '' or buf_name == nil ) and true 
-                                                   or 
-						   string.gsub(buf_name, "/[%a/]+", "") == '.notes' ) then
+	  if (buf_name == '' or buf_name == nil  ) then
 		  local opts = {buffer = true, noremap = true }
 		  print('this is a nil buffer')
 		  map('n', '<BS>', 'Gdggo',  opts) 
-		  map('n', '<Tab>', "<cmd>.w !tpu<cr>", opts)
 		  map('n', '<cr>', '<cmd>w !tee >> ~/.notes<cr>', opts)
 	  end
   end,
