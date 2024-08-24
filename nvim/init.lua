@@ -1,6 +1,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.opt.timeoutlen = 500000  -- cannot be too big (I don't know why). But 500000 is big enough
+
 local map = vim.keymap.set
 local cmd = vim.cmd
 local autocmd = vim.api.nvim_create_autocmd
