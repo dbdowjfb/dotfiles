@@ -17,17 +17,14 @@ map({'n', 'i', 'v'},'<esc><esc>', '<esc>:', options)
 map('n', ';', ':', options)
 map('n', ':', ';', options)
 
-
-
 cmd('colorscheme vim')
-
 
 autocmd({"BufEnter"}, {
   pattern = {""},
   callback = function(args) 
 	  local buf_name =  vim.api.nvim_buf_get_name(0)
 	  if (buf_name == '' or buf_name == nil  ) then
-		  local opts = {buffer = true, noremap = true }
+		  local opts = { buffer = true, noremap = true }
 		  print('this is a nil buffer')
 		  map('n', '<BS>', 'Gdggo',  opts) 
 		  map('n', '<cr>', '<cmd>w !tee >> ~/.notes<cr>', opts)

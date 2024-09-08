@@ -1,4 +1,4 @@
 rm nvim -rf; cp -r ~/.config/nvim ./
-cp -r ~/.emacs.d/init.el init.el
+rm emacs/* -rf; cp -r ~/.emacs.d/init.el ~/.emacs.d/autosave.el ./emacs
 git add .
 
