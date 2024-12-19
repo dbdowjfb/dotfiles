@@ -1,0 +1,44 @@
+# b: begining
+# i: in the middle of a line (i.e. not starting from the ^)
+
+
+snippet [[ "link" 
+[$1]($2.md)$0
+endsnippet
+
+snippet dm "display math" Ai
+$$ $1 $$ $0
+endsnippet
+
+snippet be "begin" i
+\begin{$1}$0
+endsnippet 
+
+snippet en "end" i
+\end{$1}$0
+endsnippet
+
+# this snippet should be matched when the cursor is right after four integers seperated by 
+# spaces 
+# insert a matrix using the following template
+# \begin{bmatrix} <match 1> & <match 2> \\ <match 3> & <match 4> \end{bmatrix}
+#
+#
+snippet 'mat\s+([\d\-]+)\s+([\d\-]+)\s+([\d\-]+)\s+([\d\-]+)' "matrix" r
+\begin{bmatrix}
+    `!p snip.rv = match.group(1)` & `!p snip.rv = match.group(2)`\\\\
+    `!p snip.rv = match.group(3)` & `!p snip.rv = match.group(4)`
+\end{bmatrix}
+endsnippet
+
+
+snippet 'vec\s+([\d\-]+)\s+([\d\-]+)' "matrix" r
+\begin{bmatrix}
+    `!p snip.rv = match.group(1)` \\\\
+    `!p snip.rv = match.group(2)` 
+\end{bmatrix}
+endsnippet
+
+snippet text "text" i
+\text{$1}$0
+endsnippet 

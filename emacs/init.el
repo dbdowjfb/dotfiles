@@ -2,27 +2,66 @@
 (global-company-mode)
 
 (require 'package)
+(require 'compat)
+
+(package-initialize)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t) ;; installed by default
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t) ;; installed by default from Emacs 28 onwards
 (add-to-list 'package-archives
              (cons "gnu-devel" "https://elpa.gnu.org/devel/")
              t)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+(setq browse-url-browser-function 'browse-url-generic browse-url-generic-program "xdg-open")
 
-(package-initialize)
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
+
+
+
+
+(use-package evil
+  :ensure t
+  :init
+  (evil-mode)
+  )
+
+(use-package mathjax)
+
+(require 'mathjax-autoloads)
+
+(add-hook 'eww-mode-hook #'mathjax-shr-setup)
+
+
+(add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
+(add-to-list 'evil-insert-state-modes 'elfeed-show-mode)
+
+;;; display elfeed entry in other window. switch the article on the entry 
+;;; buffer when another article is selected from the search buffer
+;;; https://www.reddit.com/r/emacs/comments/hq3r36/elfeed_configuration_to_display_in_next_window/
+(use-package elfeed
+  :bind (("C-x w" . elfeed)
+		 :map  elfeed-show-mode-map
+		 ("<right>" . (lambda () (interactive) (other-window 1) (next-line)  (call-interactively 'elfeed-search-show-entry) (other-window 1)) )
+		 ("<left>" . (lambda () (interactive) (other-window 1) (previous-line)  (call-interactively 'elfeed-search-show-entry)  (other-window 1) ))
+		 ("m" . (lambda () (interactive) (apply 'elfeed-search-toggle-all '(star))))
+  ;; :map  elfeed-search-mode-map
+  ;("SPC" . (lambda () (elfeed-show-entry)))
+  )
+  :config
+  (setq elfeed-show-entry-switch 'display-buffer)
+  (setq elfeed-search-remain-on-entry t))
 
 (setq use-package-always-ensure t)
 (eval-when-compile (require 'use-package))
 
-(use-package vertico
-  :ensure t
-  :init
-  (vertico-mode))
 
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode 1))
 
 
 (use-package savehist
@@ -36,6 +75,9 @@
     (quelpa-self-upgrade)))
 
 
+(use-package org-ql
+  :quelpa (org-ql :fetcher github :repo "alphapapa/org-ql"
+            :files (:defaults (:exclude "helm-org-ql.el"))))
 
 
 
@@ -58,13 +100,14 @@
 
 
 
-(set-face-attribute 'default nil :height 130
-		    
-		    )
-(load-theme 'gruvbox t)
-
+;(load-theme 'gruvbox t)
+(global-display-line-numbers-mode 1)
 (recentf-mode)
 (run-at-time nil 600 'recentf-save-list)
+
+
+
+
 
 ;; org-mdoe
 ;;(add-hook 'org-mode-hook 'org-cdlatex-mode)
@@ -107,6 +150,7 @@
 (set-window-buffer (selected-window) (current-buffer))))
 
 (global-set-key [f2] 'my-toggle-margins)
+(define-key global-map (kbd "<f2>") 'remember)
 
 
 (defun insert-date ()
@@ -127,21 +171,58 @@
   (indent-according-to-mode)
 )
 
+(defun my-org-ql-shuffle-todo ()
+  (interactive)
+  (org-ql-search (org-agenda-files)
+    '(and
+      (todo "TODO" "STARTED")
+      (not (done))
+      (not (scheduled))
+      (not (deadline))
+      (not (ts-active))
+      (not (tags "cooking")))
+    :sort 'random))
+
+(defun my-org-ql-shuffle-someday ()
+  (interactive)
+  (org-ql-search (org-agenda-files)
+    '(and
+      (todo "SOMEDAY")
+      (not (done))
+      (not (scheduled))
+      (not (deadline))
+      (not (ts-active))
+      (not (tags "cooking")))
+    :sort 'random))
+
+
+
 
 ; keymap for insert-line-after-and-move function 
 (global-set-key (kbd "M-n") 'insert-line-after-and-move)
 
 (global-set-key (kbd "<f1>") (lambda () (interactive) (find-file "~/.notes")
 			       (org-mode)))
+(define-key global-map (kbd "<f9> r" )  'remember-region)
 
 
 ;; ;; 自动保存
 (load-file "~/.emacs.d/autosave.el")
 
-(require 'auto-save)            ;; 加载自动保存模块
+;(require 'auto-save)            ;; 加载自动保存模块
 
-(auto-save-enable)              ;; 开启自动保存功能
-(setq auto-save-slient t)       ;; 自动保存的时候静悄悄的， 不要打扰我
+;(auto-save-enable)              ;; 开启自动保存功能
+;(setq auto-save-slient t)       ;; 自动保存的时候静悄悄的， 不要打扰我
+
+
+
+(set-face-attribute 'default nil
+		    :family "Iosevka"
+		    :height 160
+		    )
+
+(set-face-attribute 'variable-pitch nil :family "Noto Sans CJK SC")
+
 
 
 (custom-set-variables
@@ -150,9 +231,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" default))
+   '("a75aff58f0d5bbf230e5d1a02169ac2fbf45c930f816f3a21563304d5140d245" "7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" default))
  '(package-selected-packages
-   '(aggressive-indent elisp-autofmt yasnippet svgo svg-lib emacs-goodies-el marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
+   '(modus-themes mathjax--installation-directory elfeed markdown-ts-mode magit lsp-mode mathjax cdlatex f org-ql quelpa-use-package aggressive-indent elisp-autofmt yasnippet svgo svg-lib emacs-goodies-el marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -164,3 +245,17 @@
              (append '("~/Downloads")
                      Info-default-directory-list
                     ))
+
+(load-file "~/test.el")
+
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
+
+(defun my-setup-color-theme ()
+  (interactive)
+  (when (display-graphic-p)
+    (load-theme (car modus-themes-to-toggle))))
+
+(use-package modus-themes
+  :quelpa (modus-themes :fetcher github :repo "protesilaos/modus-themes")
+  :init (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+  :config (my-setup-color-theme))
