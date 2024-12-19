@@ -15,9 +15,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 vim.opt.timeoutlen = 500000  -- cannot be too big (I don't know why). But 500000 is big enough 
-vim.opt.tabstop = 4 
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
 vim.opt.hidden = true
 
 options = { noremap = true }
