@@ -1,15 +1,8 @@
-local map = vim.keymap.set local cmd = vim.cmd local autocmd =
-vim.api.nvim_create_autocmd local Plug = vim.fn['plug#']
+require("plugins")
+local map = vim.keymap.set 
+local cmd = vim.cmd local autocmd =
+vim.api.nvim_create_autocmd 
 iline = vim.api.nvim_set_current_line
-
-vim.call('plug#begin') 
-Plug('kaarmu/typst.vim') 
-Plug('SirVer/ultisnips')
-Plug('L3MON4D3/LuaSnip', { ['do'] ='make install_jsregexp'})
-Plug('nvim-lua/plenary.nvim') 
-Plug('serenevoid/kiwi.nvim')
-Plug('neovim/nvim-lspconfig') 
-vim.call('plug#end')
 
 vim.g.mapleader = " " 
 vim.g.maplocalleader = "\\"
@@ -18,6 +11,7 @@ vim.opt.timeoutlen = 500000  -- cannot be too big (I don't know why). But 500000
 vim.opt.hidden = true
 
 options = { noremap = true }
+
 
 map('n', '<leader>p', '"+p', options) 
 map({'n','v'}, '<leader>y', '"+y',
@@ -30,18 +24,21 @@ end
 map('n', 
 '<leader>w','<cmd>w<cr>',options)
 -- map('<F5>', function () 
-	-- 	local time = os.date('%Y-%m-%d %H:%M:%S')
-	-- 	  vim.api.nvim_set_current_line(time)
-	--   end, options)
-	-- map({'n', 'v'},'<esc>', ':', options)
-	map({'n', 'v'}, ';', ':', options) 
-	map('n', ':', ';', options)
-	vim.api.nvim_create_user_command('Shuflines', '1,$!shuf', {})
-	map('n',
-	'<leader>ss', '<cmd>Shuflines<cr>', options)
-
-
-
+-- 	local time = os.date('%Y-%m-%d %H:%M:%S')
+-- 	  vim.api.nvim_set_current_line(time)
+--   end, options)
+-- map({'n', 'v'},'<esc>', ':', options)
+--map({'n', 'v'}, ';', ':', options) 
+--map('n', ':', ';', options)
+vim.api.nvim_create_user_command('Shuflines', '1,$!shuf', {})
+map('n', '<leader>ss', '<cmd>Shuflines<cr>', options)
+map('n', '<leader><leader>', ':', options)
+map('n', '<leader>e', ":w <bar> exec '!python3 '.shellescape('%')<CR>")
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 	function save_context()
 		local current_line = vim.api.nvim_get_current_line()
 		local row, col =
@@ -93,10 +90,12 @@ map('n',
 	-- Necessary keybindings
 	vim.keymap.set('n', '<leader>o', function() cmd('cd'.. kiwi_path)
 		kiwi.open_wiki_index() end , {}) vim.keymap.set('n', '<leader>t', kiwi.todo.toggle, {}) 
-		require'lspconfig'.pyright.setup{}
+	require'lspconfig'.pyright.setup{}
 
 function date() 
 	output=  os.date([[%Y-%m-%d %H:%M:%S]])
 	return output
 end
+
+
 

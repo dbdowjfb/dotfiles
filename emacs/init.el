@@ -47,9 +47,7 @@
 ;;; https://www.reddit.com/r/emacs/comments/hq3r36/elfeed_configuration_to_display_in_next_window/
 (use-package elfeed
   :bind (("C-x w" . elfeed)
-		 :map  elfeed-show-mode-map
-		 ("<right>" . (lambda () (interactive) (other-window 1) (next-line)  (call-interactively 'elfeed-search-show-entry) (other-window 1)) )
-		 ("<left>" . (lambda () (interactive) (other-window 1) (previous-line)  (call-interactively 'elfeed-search-show-entry)  (other-window 1) ))
+		 :map  elfeed-search-mode-map
 		 ("m" . (lambda () (interactive) (apply 'elfeed-search-toggle-all '(star))))
   ;; :map  elfeed-search-mode-map
   ;("SPC" . (lambda () (elfeed-show-entry)))
@@ -155,7 +153,7 @@
 
 (defun insert-date ()
   (interactive)
-  (shell-command "date +'%Y-%m-%d %H:%M:%S'" t)) 
+  (shell-command "date +'%Y-%m-%d '" t)) 
 
 (recentf-mode)
 
@@ -232,6 +230,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("a75aff58f0d5bbf230e5d1a02169ac2fbf45c930f816f3a21563304d5140d245" "7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" default))
+ '(elfeed-feeds '("https://blog.danieljanus.pl/atom.xml"))
  '(package-selected-packages
    '(modus-themes mathjax--installation-directory elfeed markdown-ts-mode magit lsp-mode mathjax cdlatex f org-ql quelpa-use-package aggressive-indent elisp-autofmt yasnippet svgo svg-lib emacs-goodies-el marginalia exec-path-from-shell auctex kana dash pdf-tools company vertico gptel use-package macaulay2 cmake-mode)))
 (custom-set-faces
