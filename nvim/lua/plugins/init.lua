@@ -17,7 +17,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug ('nvim-telescope/telescope.nvim', { ['tag']= '0.1.8' })
 Plug "nvim-treesitter/nvim-treesitter"
 Plug "nvim-tree/nvim-web-devicons"
-Plug "OXY2DEV/markview.nvim"
+Plug "t184256/vim-boring"
 vim.call('plug#end')
 
 
@@ -66,14 +66,13 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
-require("markview").setup({
-    hybrid_modes = { "n" }
-})
-
+--require("markview").setup({
+--    hybrid_modes = { "n" }
+--})
+--
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "markdown", "markdown_inline" },
-  highlight = {enable = true}
+  ensure_installed = { "markdown", "markdown_inline", "python" },
   }
 
 
