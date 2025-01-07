@@ -71,8 +71,15 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 --})
 --
 require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "markdown", "markdown_inline", "python" },
+	-- A list of parser names, or "all" (the listed parsers MUST always be installed)
+	ensure_installed = { "markdown",  
+	"markdown_inline",
+	"python",
+	"vimdoc",
+	"luadoc",
+	"vim",
+	"latex"
+},
   }
 
 

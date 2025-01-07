@@ -7,12 +7,13 @@ iline = vim.api.nvim_set_current_line
 vim.g.mapleader = " " 
 vim.g.maplocalleader = "\\"
 
---vim.opt.timeoutlen = 500000  -- cannot be too big (I don't know why). But 500000 is big enough 
+vim.opt.timeoutlen = 500000  -- cannot be too big (I don't know why). But 500000 is big enough 
 vim.opt.hidden = true
 
 options = { noremap = true }
 vim.opt.background = 'dark'
-cmd('colorscheme vim')
+vim.go.laststatus=0 -- hide statusline
+cmd('colorscheme 256_noir')
 
 map('n', '<leader>p', '"+p', options) 
 map({'n','v'}, '<leader>y', '"+y',
@@ -73,7 +74,7 @@ autocmd({"BufEnter"}, { pattern = {""}, callback = function(args) local
 		nil  ) then 
 		local opts = { buffer = true, noremap = true }
 		-- map('n', '<BS>', 'Gdggo',  opts)
-		map('n', '<C-c>', '<cmd>w !tee >> ~/.notes|echo "saved to"<cr>', opts)
+		map({'n','i'}, '<C-c><C-c>', '<cmd>w !tee >> ~/.notes|echo "saved to"<cr>', opts)
 		--		  map('i', '<cr>', '<cmd>lua save_context()<cr>', opts) if
 		--		  at the beginning of a line, then enter
 	end 
