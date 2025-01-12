@@ -27,9 +27,9 @@
 
 
 (use-package evil
-  :ensure t
+  :ensure t 
   :init
-  (evil-mode)
+  ()
   )
 
 (use-package mathjax)
