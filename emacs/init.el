@@ -204,18 +204,9 @@
 (define-key global-map (kbd "<f9> r" )  'remember-region)
 
 
-;; ;; 自动保存
-(load-file "~/.emacs.d/autosave.el")
-
-;(require 'auto-save)            ;; 加载自动保存模块
-
-;(auto-save-enable)              ;; 开启自动保存功能
-;(setq auto-save-slient t)       ;; 自动保存的时候静悄悄的， 不要打扰我
-
-
 
 (set-face-attribute 'default nil
-		    :family "Iosevka"
+		    :family "KaTeX_Typewriter"
 		    :height 160
 		    )
 
@@ -254,7 +245,7 @@
   (when (display-graphic-p)
     (load-theme (car modus-themes-to-toggle))))
 
-(use-package modus-themes
-  :quelpa (modus-themes :fetcher github :repo "protesilaos/modus-themes")
-  :init (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-  :config (my-setup-color-theme))
+;(use-package modus-themes
+;  :quelpa (modus-themes :fetcher github :repo "protesilaos/modus-themes")
+;  :init (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+;  :config (my-setup-color-theme))
